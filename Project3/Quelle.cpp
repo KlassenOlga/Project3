@@ -62,19 +62,20 @@ int main() {
 	int dzahl;
 	int ergebnis;
 	int zsystem;
+	bool h=true;
 	
-	
-	cout << "Geben Sie Ihr Speicherformat in Bits ein"<<endl;
+	cout << "Geben Sie Ihr Speicherformat  ein"<<endl;
 	cin >> zsystem;
-	char* array1= new char[zsystem];
-	array1[zsystem-1] = '\0';
+	zsystem = zsystem * 8;
+	char* array1= new char[zsystem+1];
+	array1[zsystem] = '\0';
 	
-	int element = zsystem - 2;
-	int i = zsystem-2;
+	int element = zsystem - 1;
+	int i = zsystem-1;
 	cout << "Geben Sie Ihre Dezimalzahl ein" << endl;
 	cin >> dzahl;
-	if (dzahl > 0) {
 		memset(array1, '0', zsystem - 1 * sizeof(char));
+	if (dzahl > 0) {
 		while (dzahl >= 1) {
 			ergebnis = dzahl % 2;
 			array1[i] = ergebnis + '0';
@@ -85,40 +86,49 @@ int main() {
 	}
 	
 	else if (dzahl < 0) {
-		memset(array1, '1', zsystem-1 * sizeof(char));
-		dzahl = dzahl *(-1);
-		while (dzahl >= 1) {
+		h = false;
+		dzahl = dzahl * (-1);
+		while (dzahl >0) {
 			ergebnis = dzahl % 2;
-			if (ergebnis == 0) {
-				ergebnis = 1;
-			}
-			else {
-				ergebnis = 0;
-
-			}
-
 			array1[i] = ergebnis + '0';
-			i--;
 			dzahl = dzahl / 2;
+			i--;
 		}
-		while (element>=0) {
+		
+		while (element >= 0) {
+			
 			if (array1[element] == '1') {
-				array1[element] = '0';
 				element--;
+				while (element >= 0) {
 
+					if (array1[element] == '0') {
+						array1[element] = '1';
+					}
+					else {
+						array1[element] = '0';
+					}
+					element--;
+
+
+				}
 			}
+			 
 			else if (array1[element] == '0') {
-				array1[element] = '1';
-				break;
+				element--;
 			}
-		
-		}
-		
-		
-	}
-	
-	cout << array1;
+			
 
+			
+		}
+	}
+
+	if (h==true && array1[0]=='1' ) {
+		cout << "Fehler – Resultat gälte als negative Zahl!";
+
+	}
+	else {
+		cout << array1;
+	}
 	system("pause");
 	return 0;
 
